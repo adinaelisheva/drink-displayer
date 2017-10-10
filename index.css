@@ -1,0 +1,18 @@
+#main {
+  display: flex;
+  flex-direction: column;
+}
+
+#error {
+  color: red;
+  height: 20px;
+}
+
+#data {
+  height: 150px;
+  max-width: 500px;
+}
+
+button {
+  width: 100px;
+}
