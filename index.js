@@ -1,6 +1,30 @@
 const drinkMap = {
+  'bourbon': {
+    'color': '#A18950',
+    'pattern': 'stripes',
+    'patternColor': '#000000',
+  },
+  'whiskey': {
+    'color': '#CCB47C',
+    'pattern': 'stripes',
+    'patternColor': '#000000',
+  },
+  'brandy': {
+    'color': '#968432',
+    'pattern': 'stripes',
+    'patternColor': '#CCC08D',
+  },
   'rum': {
     'color': '#D6C163',
+  },
+  'creme de menthe': {
+    'color': '#DFF7D5',
+  },
+  'creme de cacao': {
+    'color': '#D6C47A',
+  },
+  'kahlua': {
+    'color': '#AD7F42',
   },
   'tequila': {
     'color': '#E6FAE6',
@@ -11,29 +35,80 @@ const drinkMap = {
   'vodka': {
     'color': '#DEF9FF',
   },
-  'coke': {
+  'cola': {
     'color': '#B5A276',
     'pattern': 'dots',
     'patternColor': '#E0D8C5',
-    'patternOffset': true,
   },
   'sprite': {
     'color': '#F7FAAF',
     'pattern': 'dots',
     'patternColor': '#ffffff',
-    'patternOffset': true,
+  },
+  'champagne': {
+    'color': '#F2E896',
+    'pattern': 'dots',
+    'patternColor': '#ffffff',
+  },
+  'iced tea': {
+    'color': '#E3BA3D',
+  },
+  'cherry juice': {
+    'color': '#9C4343',
   },
   'ginger ale': {
     'color': '#DEC357',
     'pattern': 'dots',
     'patternColor': '#ffffff',
-    'patternOffset': true,
   },
   'lime juice': {
-    'color': '#C3FAA7',
+    'color': '#9FF27E',
+  },
+  'tomato juice': {
+    'color': '#D66413',
+  },
+  'pineapple juice': {
+    'color': '#F2ED4E',
   },
   'orange juice': {
-    'color': '#FAC569',
+    'color': '#F5C451',
+  },
+  'tonic water': {
+    'color': '#F2F1CE',
+    'pattern': 'dots',
+    'patternColor': '#ffffff',
+  },
+  'water': {
+    'color': '#EDF7F6',
+    'pattern': 'stripes',
+    'patternColor': '#ffffff',
+  },
+  'milk': {
+    'color': '#ffffff',
+  },
+  'cream': {
+    'color': '#FAFAE3',
+    'pattern': 'stripes',
+    'patternColor': '#ffffff',
+  },
+  'sweet and sour mix': {
+    'color': '#EDF5C4',
+    'pattern': 'dots',
+    'patternColor': '#FFFC4D',
+  },
+  'hard cider': {
+    'color': '#DBC51F',
+    'pattern': 'dots',
+    'patternColor': '#F2E052',
+  },
+  'fireball': {
+    'color': '#EBAF0C',
+  },
+  "peach schnapps": {
+    'color': '#EBB65B',
+  },
+  "grenadine": {
+    'color': '#D67E7E',
   },
 };
 
@@ -71,7 +146,7 @@ const fillWithDots = (x,y,width,height,color,offset) => {
   ctx.fillStyle = color;
   let shiftAmt = 5;
   for(let j = y + 5; j < y + height; j+=7) {
-    if (offset) {
+    if (offset !== false) {
       shiftAmt = shiftAmt === 3 ? 6 : 3;
     }
     for(let i = x + shiftAmt; i < x + width; i+=7) {      
@@ -95,7 +170,7 @@ const fillWithStripes = (x,y,width,height,color) => {
 };
 
 const drawLayer = (layer, start) => {
-  const height = Math.floor(layer[1] * 200);
+  const height = Math.floor(layer[1] * 400);
   const drinkInfo = drinkMap[layer[0]];
   ctx.fillStyle = drinkInfo.color;
   ctx.fillRect(10, start, 100, height);
@@ -137,8 +212,21 @@ const main = () => {
   document.getElementById('submit').onclick = handleClick;
   drinkInput.onkeyup = checkForError;
 
-  drinkInput.innerText = '[["rum",1],[ "gin",2], ["coke", 3]]';
-};
+  let drinkListHtml = '<h3>Drinks:</h3><ul>';
+  let inputStartStr = '[';
+  Object.keys(drinkMap).forEach((item) => {
+    drinkListHtml += `<li>${item}</li>`;
+    if(inputStartStr.length > 1) {
+      inputStartStr += ',';
+    }
+    inputStartStr += `["${item}", 1]`;
+  });
+  drinkListHtml += '</ul>';
+  inputStartStr += `]`;
+  document.getElementById('info').innerHTML = drinkListHtml;
+  
+  drinkInput.innerText = inputStartStr;
 
+};
 
 window.onload = main;

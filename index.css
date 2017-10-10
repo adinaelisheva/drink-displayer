@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+#container {
+  display: flex;
+}
+
 #error {
   color: red;
   height: 20px;
@@ -20,4 +24,12 @@ button {
 #canvas {
   width: 500px;
   height: 500px;
+}
+
+#info {
+  margin: 0 50px;  
+}
+
+#info h3 {
+  margin-top: 0;
 }
