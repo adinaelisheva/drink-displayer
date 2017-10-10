@@ -16,3 +16,8 @@
 button {
   width: 100px;
 }
+
+#canvas {
+  width: 500px;
+  height: 500px;
+}
