@@ -64,6 +64,9 @@ const drinkMap = {
   'lime juice': {
     'color': '#9FF27E',
   },
+  'lemon juice': {
+    'color': '#F5F5B3',
+  },
   'tomato juice': {
     'color': '#D66413',
   },
@@ -112,6 +115,9 @@ const drinkMap = {
   },
 };
 
+const glassHeight = 100;
+const glassWidth = 150;
+
 let ctx;
 let drinkInput;
 let errorDiv;
@@ -133,10 +139,10 @@ const fillWithPattern = (drinkInfo, start, height) => {
   ctx.globalCompositeOperation = 'source-atop';
   switch (drinkInfo.pattern) {
     case 'dots':
-      fillWithDots(0, start, 110, height + 10, drinkInfo.patternColor, drinkInfo.patternOffset);
+      fillWithDots(0, start, glassWidth + 10, height + 10, drinkInfo.patternColor, drinkInfo.patternOffset);
       break;
     case 'stripes':
-      fillWithStripes(0, start, 110, height + 10, drinkInfo.patternColor);
+      fillWithStripes(0, start, glassWidth + 10, height + 10, drinkInfo.patternColor);
       break;
   }
   ctx.globalCompositeOperation = 'source-over';
@@ -170,12 +176,12 @@ const fillWithStripes = (x,y,width,height,color) => {
 };
 
 const drawLayer = (layer, start) => {
-  const height = Math.floor(layer[1] * 400);
+  const height = Math.floor(layer[1] * glassHeight);
   const drinkInfo = drinkMap[layer[0]];
   ctx.fillStyle = drinkInfo.color;
-  ctx.fillRect(10, start, 100, height);
+  ctx.fillRect(10, start, glassWidth, height);
   fillWithPattern(drinkInfo, start, height);
-  ctx.strokeRect(10.5, start+0.5, 100, height);
+  ctx.strokeRect(10.5, start+0.5, glassWidth, height);
   return start + height;
 };
 
@@ -185,6 +191,18 @@ const drawDrink = (drink) => {
   drink.reverse().forEach((item) => {
     pos = drawLayer(item, pos);
   });
+
+  // Draw the glass.
+  ctx.beginPath();
+  ctx.moveTo(10.5,10.5);
+  ctx.lineTo(10.5,8.5);
+  ctx.lineTo(5.5,8.5);
+  ctx.lineTo(5.5,glassHeight + 12.5);
+  ctx.lineTo(glassWidth + 15.5,glassHeight + 12.5);
+  ctx.lineTo(glassWidth + 15.5,8.5);
+  ctx.lineTo(glassWidth + 10.5,8.5);
+  ctx.lineTo(glassWidth + 10.5,10.5);
+  ctx.stroke();
 };
 
 const handleClick = () => {
