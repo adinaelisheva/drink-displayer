@@ -182,7 +182,7 @@ const drawLayer = (layer, start) => {
 const drawDrink = (drink) => {
   drink = convertToPercent(drink);
   let pos = 10;
-  drink.forEach((item) => {
+  drink.reverse().forEach((item) => {
     pos = drawLayer(item, pos);
   });
 };
