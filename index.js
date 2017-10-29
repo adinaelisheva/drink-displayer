@@ -113,14 +113,26 @@ const drinkMap = {
   "grenadine": {
     'color': '#D67E7E',
   },
+  "bitters": {
+    'color': '#C2BA99',
+    'pattern': 'dots',
+    'patternColor': '#FFFFFF',
+  }
 };
+
+const selectContents = (() => {
+  let ret = '';
+  Object.keys(drinkMap).forEach((key) => {    
+    ret += `<option value="${key}">${key}</option>`;
+  });
+  return ret;
+})();
+
 
 const glassHeight = 100;
 const glassWidth = 150;
 
 let ctx;
-let drinkInput;
-let errorDiv;
 
 const convertToPercent = (drink) => {
   const total = drink.reduce((curVal, item) => {
@@ -206,44 +218,66 @@ const drawDrink = (drink) => {
 };
 
 const handleClick = () => {
-  if (errorDiv.innerText !== '') {
-    return;
-  }
-  drawDrink(JSON.parse(drinkInput.value));
+  //drawDrink(???)
 };
 
-const checkForError = () => {
-  try {
-    JSON.parse(drinkInput.value);
-  } catch(e) {
-    errorDiv.innerText = 'Error: invalid JSON';
+const removeRow = (id) => {
+  const parent = document.querySelector('#form');
+  const row = parent.querySelector(`#row${id}`);
+  if (row && parent.childElementCount > 1) {
+    parent.removeChild(row);
+  }
+}
+
+const addRow = (siblingId) => {
+  const parent = document.querySelector('#form');
+  const id = parent.childElementCount + 1;
+
+  const rowDiv = document.createElement('div');
+  rowDiv.classList.add('formrow');
+  rowDiv.id = `row${id}`;
+
+  const drinkList = document.createElement('select');
+  drinkList.classList.add('drink');
+  drinkList.innerHTML = selectContents;
+  rowDiv.appendChild(drinkList);
+
+  const drinkAmount = document.createElement('input');
+  drinkAmount.classList.add('amount');
+  drinkAmount.setAttribute('type','number');
+  rowDiv.appendChild(drinkAmount);
+
+  const minus = document.createElement('button');
+  minus.innerHTML = '-';
+  minus.onclick = () => { removeRow(id); }
+  rowDiv.appendChild(minus);
+
+  const plus = document.createElement('button');
+  plus.innerHTML = '+';
+  plus.onclick = () => { addRow(id); };
+  rowDiv.appendChild(plus);
+
+  if (!siblingId) {
+    parent.appendChild(rowDiv);
     return;
   }
-  errorDiv.innerText = '';
-};
+
+  const sibling = parent.querySelector(`#row${siblingId}`);
+  if (sibling && sibling.nextSibling) {
+    parent.insertBefore(rowDiv, sibling.nextSibling);
+    return;
+  }
+
+  parent.appendChild(rowDiv);
+
+}
 
 const main = () => {
   ctx = document.getElementById('canvas').getContext('2d');
   ctx.strokeStyle = '#000000';
-  drinkInput = document.getElementById('data');
-  errorDiv = document.getElementById('error');
-  document.getElementById('submit').onclick = handleClick;
-  drinkInput.onkeyup = checkForError;
+  document.querySelector('#submit').onclick = handleClick;
 
-  let drinkListHtml = '<h3>Drinks:</h3><ul>';
-  let inputStartStr = '[';
-  Object.keys(drinkMap).forEach((item) => {
-    drinkListHtml += `<li>${item}</li>`;
-    if(inputStartStr.length > 1) {
-      inputStartStr += ',';
-    }
-    inputStartStr += `["${item}", 1]`;
-  });
-  drinkListHtml += '</ul>';
-  inputStartStr += `]`;
-  document.getElementById('info').innerHTML = drinkListHtml;
-  
-  drinkInput.innerText = inputStartStr;
+  addRow();
 
 };
 

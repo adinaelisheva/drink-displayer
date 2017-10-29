@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+#formrow {
+  display: flex;
+}
+
 #container {
   display: flex;
 }
@@ -17,7 +21,11 @@
   max-width: 500px;
 }
 
-button {
+input.amount {
+  width: 4em;
+}
+
+button#submit {
   width: 100px;
 }
 
