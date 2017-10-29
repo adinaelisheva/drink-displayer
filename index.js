@@ -128,8 +128,7 @@ const selectContents = (() => {
   return ret;
 })();
 
-
-const glassHeight = 100;
+const glassHeight = 170;
 const glassWidth = 150;
 
 let ctx;
@@ -198,6 +197,7 @@ const drawLayer = (layer, start) => {
 };
 
 const drawDrink = (drink) => {
+  ctx.clearRect(0,0,1000,1000);
   drink = convertToPercent(drink);
   let pos = 10;
   drink.reverse().forEach((item) => {
@@ -205,6 +205,8 @@ const drawDrink = (drink) => {
   });
 
   // Draw the glass.
+  ctx.fillStyle = '#FFFFFF';
+  ctx.strokeStyle = '#000000';
   ctx.beginPath();
   ctx.moveTo(10.5,10.5);
   ctx.lineTo(10.5,8.5);
@@ -217,9 +219,42 @@ const drawDrink = (drink) => {
   ctx.stroke();
 };
 
+const formToJSON = () => {
+  let drinkJSON = '[';
+  let first = true;
+  const children = document.querySelector('#form').children;
+  for(let i = 0; i < children.length; i++) {
+    let child = children[i];
+    if (!first) {
+      drinkJSON += ','
+    } else {
+      first = false;
+    }
+    drinkJSON += '["';
+    drinkJSON += child.querySelector('select.drink').value;
+    drinkJSON += '",';
+    drinkJSON += child.querySelector('input.amount').value;
+    drinkJSON += ']';
+  }
+  drinkJSON += ']';
+  return JSON.parse(drinkJSON);
+}
+
 const handleClick = () => {
-  //drawDrink(???)
+  drawDrink(formToJSON());
 };
+
+const surpriseMe = () => {
+  const rows = document.querySelector('#form').children;
+  const drinks = Object.keys(drinkMap).sort();
+  for(let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    let index = Math.floor(Math.random() * Object.keys(drinkMap).length);
+    row.querySelector('select.drink').value = drinks[index];
+    row.querySelector('input.amount').value = Math.ceil(Math.random()*10);
+  }
+  handleClick();
+}
 
 const removeRow = (id) => {
   const parent = document.querySelector('#form');
@@ -245,6 +280,7 @@ const addRow = (siblingId) => {
   const drinkAmount = document.createElement('input');
   drinkAmount.classList.add('amount');
   drinkAmount.setAttribute('type','number');
+  drinkAmount.value = 1;
   rowDiv.appendChild(drinkAmount);
 
   const minus = document.createElement('button');
@@ -276,9 +312,8 @@ const main = () => {
   ctx = document.getElementById('canvas').getContext('2d');
   ctx.strokeStyle = '#000000';
   document.querySelector('#submit').onclick = handleClick;
-
+  document.querySelector('#random').onclick = surpriseMe;
   addRow();
-
 };
 
 window.onload = main;

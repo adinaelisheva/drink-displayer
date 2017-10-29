@@ -7,10 +7,18 @@
   <body>
     <div id="container">
       <div id="main">
+        <div class="formrow">
+          <select id="glassTypes">
+            <option value="highball">highball</option>
+            <option value="lowball">lowball</option>
+            <option value="champagne">champagne flute</option>
+            <option value="martini">martini</option>
+          </select>
+        </div>
         <div id="form">
         </div>
-        <div id="error"></div>
-        <button id="submit">Draw</button>
+        <button id="submit" class="info">Draw</button>
+        <button id="random" class="info">Surprise me!</button>
         <canvas id="canvas" width="500" height="500"></canvas>
       </div>
       <div id="info"></div>
