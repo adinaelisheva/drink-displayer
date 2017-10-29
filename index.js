@@ -122,7 +122,7 @@ const drinkMap = {
 
 const selectContents = (() => {
   let ret = '';
-  Object.keys(drinkMap).forEach((key) => {    
+  Object.keys(drinkMap).sort().forEach((key) => {    
     ret += `<option value="${key}">${key}</option>`;
   });
   return ret;
