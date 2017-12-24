@@ -113,14 +113,25 @@ const drinkMap = {
   "grenadine": {
     'color': '#D67E7E',
   },
+  "bitters": {
+    'color': '#C2BA99',
+    'pattern': 'dots',
+    'patternColor': '#FFFFFF',
+  }
 };
 
-const glassHeight = 100;
+const selectContents = (() => {
+  let ret = '';
+  Object.keys(drinkMap).sort().forEach((key) => {    
+    ret += `<option value="${key}">${key}</option>`;
+  });
+  return ret;
+})();
+
+const glassHeight = 170;
 const glassWidth = 150;
 
 let ctx;
-let drinkInput;
-let errorDiv;
 
 const convertToPercent = (drink) => {
   const total = drink.reduce((curVal, item) => {
@@ -186,6 +197,7 @@ const drawLayer = (layer, start) => {
 };
 
 const drawDrink = (drink) => {
+  ctx.clearRect(0,0,1000,1000);
   drink = convertToPercent(drink);
   let pos = 10;
   drink.reverse().forEach((item) => {
@@ -193,6 +205,8 @@ const drawDrink = (drink) => {
   });
 
   // Draw the glass.
+  ctx.fillStyle = '#FFFFFF';
+  ctx.strokeStyle = '#000000';
   ctx.beginPath();
   ctx.moveTo(10.5,10.5);
   ctx.lineTo(10.5,8.5);
@@ -205,46 +219,101 @@ const drawDrink = (drink) => {
   ctx.stroke();
 };
 
-const handleClick = () => {
-  if (errorDiv.innerText !== '') {
-    return;
+const formToJSON = () => {
+  let drinkJSON = '[';
+  let first = true;
+  const children = document.querySelector('#form').children;
+  for(let i = 0; i < children.length; i++) {
+    let child = children[i];
+    if (!first) {
+      drinkJSON += ','
+    } else {
+      first = false;
+    }
+    drinkJSON += '["';
+    drinkJSON += child.querySelector('select.drink').value;
+    drinkJSON += '",';
+    drinkJSON += child.querySelector('input.amount').value;
+    drinkJSON += ']';
   }
-  drawDrink(JSON.parse(drinkInput.value));
+  drinkJSON += ']';
+  return JSON.parse(drinkJSON);
+}
+
+const handleClick = () => {
+  drawDrink(formToJSON());
 };
 
-const checkForError = () => {
-  try {
-    JSON.parse(drinkInput.value);
-  } catch(e) {
-    errorDiv.innerText = 'Error: invalid JSON';
+const surpriseMe = () => {
+  const rows = document.querySelector('#form').children;
+  const drinks = Object.keys(drinkMap).sort();
+  for(let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    let index = Math.floor(Math.random() * Object.keys(drinkMap).length);
+    row.querySelector('select.drink').value = drinks[index];
+    row.querySelector('input.amount').value = Math.ceil(Math.random()*10);
+  }
+  handleClick();
+}
+
+const removeRow = (id) => {
+  const parent = document.querySelector('#form');
+  const row = parent.querySelector(`#row${id}`);
+  if (row && parent.childElementCount > 1) {
+    parent.removeChild(row);
+  }
+}
+
+const addRow = (siblingId) => {
+  const parent = document.querySelector('#form');
+  const id = parent.childElementCount + 1;
+
+  const rowDiv = document.createElement('div');
+  rowDiv.classList.add('formrow');
+  rowDiv.id = `row${id}`;
+
+  const drinkList = document.createElement('select');
+  drinkList.classList.add('drink');
+  drinkList.innerHTML = selectContents;
+  rowDiv.appendChild(drinkList);
+
+  const drinkAmount = document.createElement('input');
+  drinkAmount.classList.add('amount');
+  drinkAmount.setAttribute('type','number');
+  drinkAmount.value = 1;
+  rowDiv.appendChild(drinkAmount);
+
+  const minus = document.createElement('button');
+  minus.innerHTML = '-';
+  minus.onclick = () => { removeRow(id); }
+  rowDiv.appendChild(minus);
+
+  const plus = document.createElement('button');
+  plus.innerHTML = '+';
+  plus.onclick = () => { addRow(id); };
+  rowDiv.appendChild(plus);
+
+  if (!siblingId) {
+    parent.appendChild(rowDiv);
     return;
   }
-  errorDiv.innerText = '';
-};
+
+  const sibling = parent.querySelector(`#row${siblingId}`);
+  if (sibling && sibling.nextSibling) {
+    parent.insertBefore(rowDiv, sibling.nextSibling);
+    return;
+  }
+
+  parent.appendChild(rowDiv);
+
+}
 
 const main = () => {
   ctx = document.getElementById('canvas').getContext('2d');
   ctx.strokeStyle = '#000000';
-  drinkInput = document.getElementById('data');
-  errorDiv = document.getElementById('error');
-  document.getElementById('submit').onclick = handleClick;
-  drinkInput.onkeyup = checkForError;
-
-  let drinkListHtml = '<h3>Drinks:</h3><ul>';
-  let inputStartStr = '[';
-  Object.keys(drinkMap).forEach((item) => {
-    drinkListHtml += `<li>${item}</li>`;
-    if(inputStartStr.length > 1) {
-      inputStartStr += ',';
-    }
-    inputStartStr += `["${item}", 1]`;
-  });
-  drinkListHtml += '</ul>';
-  inputStartStr += `]`;
-  document.getElementById('info').innerHTML = drinkListHtml;
-  
-  drinkInput.innerText = inputStartStr;
-
+  document.querySelector('#submit').onclick = handleClick;
+  document.querySelector('#random').onclick = surpriseMe;
+  addRow();
 };
 
 window.onload = main;

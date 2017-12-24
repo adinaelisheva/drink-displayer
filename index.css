@@ -3,6 +3,15 @@
   flex-direction: column;
 }
 
+.formrow {
+  display: flex;
+  margin: 5px 0;
+}
+
+.formrow > * {
+  margin-right: 5px;
+}
+
 #container {
   display: flex;
 }
@@ -17,8 +26,16 @@
   max-width: 500px;
 }
 
-button {
+input.amount {
+  width: 4em;
+}
+
+button.info {
   width: 100px;
+}
+
+#random {
+  margin-top: 10px;
 }
 
 #canvas {
