@@ -39,6 +39,7 @@ button.info {
 }
 
 #canvas {
+  margin-top: 25px;
   width: 500px;
   height: 500px;
 }
