@@ -87,10 +87,37 @@ const drawLayer = (layer, start) => {
   return start + height;
 };
 
-const drawHighOrLowball = () => {
-  ctx.fillStyle = '#FFFFFF';
-  ctx.strokeStyle = '#000000';
+const drawMartini = () => {
+  const halfWidth = Math.floor(glassWidth/2);
+  
+  // block out the drink outside of the glass
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.moveTo(10.5,10.5);
+  ctx.lineTo(glassWidth + 10.5, 10.5);
+  ctx.lineTo(halfWidth + 5.5, glassHeight);
+  ctx.lineTo(10.5, 10.5);
+  ctx.fill();
+  
+  // draw the glass itself
+  ctx.globalCompositeOperation = 'source-over';
   ctx.beginPath();
+  ctx.moveTo(3.5,3.5);
+  ctx.lineTo(8.5,3.5);
+  ctx.lineTo(halfWidth + 5.5, glassHeight);
+  ctx.lineTo(glassWidth + 12.5, 3.5);
+  ctx.lineTo(glassWidth + 17.5, 3.5);
+  ctx.lineTo(halfWidth + 7.5, glassHeight + 5.5);
+  ctx.lineTo(halfWidth + 7.5, glassHeight + 100.5);
+  ctx.lineTo(halfWidth + 23.5, glassHeight + 115.5);
+  ctx.lineTo(halfWidth - 13.5, glassHeight + 115.5);
+  ctx.lineTo(halfWidth + 3.5, glassHeight + 100.5);
+  ctx.lineTo(halfWidth + 3.5, glassHeight + 5.5);
+  ctx.lineTo(3.5, 3.5);
+  ctx.stroke();
+  ctx.fill();
+}
+
+const drawHighOrLowball = () => {
   ctx.moveTo(10.5,10.5);
   ctx.lineTo(10.5,3.5);
   ctx.lineTo(5.5,3.5);
@@ -99,10 +126,12 @@ const drawHighOrLowball = () => {
   ctx.lineTo(glassWidth + 15.5,3.5);
   ctx.lineTo(glassWidth + 10.5,3.5);
   ctx.lineTo(glassWidth + 10.5,10.5);
-  ctx.stroke();
 }
 
 const drawGlass = (glassType) => {
+  ctx.fillStyle = '#FFFFFF';
+  ctx.strokeStyle = '#000000';
+  ctx.beginPath();
   switch (glassType) {
     case "highball":
     case "lowball":
@@ -111,8 +140,10 @@ const drawGlass = (glassType) => {
     case "champagne":
       break;
     case "martini":
+      drawMartini();
       break;
   }
+  ctx.stroke();
 }
 
 const drawDrink = (json) => {
