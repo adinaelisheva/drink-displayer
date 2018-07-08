@@ -120,9 +120,9 @@ const drinkMap = {
   }
 };
 
-const glassTypeHeightMap = {
-  "highball": 250,
-  "lowball": 120,
-  "martini": 80,
-  "champagne": 130,
+const glassTypeSizeMap = {
+  "highball": [250, 150],
+  "lowball": [120, 150],
+  "martini": [80, 150],
+  "champagne": [180, 80],
 };

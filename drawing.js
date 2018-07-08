@@ -1,13 +1,5 @@
-const selectContents = (() => {
-  let ret = '';
-  Object.keys(drinkMap).sort().forEach((key) => {    
-    ret += `<option value="${key}">${key}</option>`;
-  });
-  return ret;
-})();
-
 let glassHeight;
-const glassWidth = 150;
+let glassWidth;
 
 let ctx;
 
@@ -87,6 +79,15 @@ const drawLayer = (layer, start) => {
   return start + height;
 };
 
+const drawStem = (ctx, x1, x2, y) => {
+  // Note that this is going from right to left, so down in x.
+  ctx.lineTo(x1, y + 100);
+  ctx.lineTo(x1 + 20, y + 115);
+  ctx.lineTo(x2 - 20, y + 115);
+  ctx.lineTo(x2, y + 100);
+  ctx.lineTo(x2, y);
+};
+
 const drawMartini = () => {
   const halfWidth = Math.floor(glassWidth/2);
   
@@ -101,18 +102,32 @@ const drawMartini = () => {
   // draw the glass itself
   ctx.globalCompositeOperation = 'source-over';
   ctx.beginPath();
-  ctx.moveTo(3.5,3.5);
+  ctx.moveTo(2.5,3.5);
   ctx.lineTo(8.5,3.5);
   ctx.lineTo(halfWidth + 5.5, glassHeight);
   ctx.lineTo(glassWidth + 12.5, 3.5);
-  ctx.lineTo(glassWidth + 17.5, 3.5);
-  ctx.lineTo(halfWidth + 7.5, glassHeight + 5.5);
-  ctx.lineTo(halfWidth + 7.5, glassHeight + 100.5);
-  ctx.lineTo(halfWidth + 23.5, glassHeight + 115.5);
-  ctx.lineTo(halfWidth - 13.5, glassHeight + 115.5);
-  ctx.lineTo(halfWidth + 3.5, glassHeight + 100.5);
-  ctx.lineTo(halfWidth + 3.5, glassHeight + 5.5);
-  ctx.lineTo(3.5, 3.5);
+  ctx.lineTo(glassWidth + 18.5, 3.5);
+  ctx.lineTo(halfWidth + 8.5, glassHeight + 5.5);
+  drawStem(ctx, halfWidth + 8.5, halfWidth + 2.5, glassHeight + 5.5);
+  ctx.lineTo(2.5, 3.5);
+  ctx.stroke();
+  ctx.fill();
+};
+
+const drawChampagne = () => {
+  const halfWidth = Math.floor(glassWidth/2);
+  
+  ctx.moveTo(5.5,3.5);
+  ctx.lineTo(10.5,3.5);
+  ctx.lineTo(10.5, glassHeight + 5.5);
+  ctx.lineTo(glassWidth + 8.5, glassHeight + 5.5);
+  ctx.lineTo(glassWidth + 8.5, 3.5);
+  ctx.lineTo(glassWidth + 13.5, 3.5);
+  ctx.lineTo(glassWidth + 13.5, glassHeight + 10.5);
+  ctx.lineTo(halfWidth + 8.5, glassHeight + 10.5);
+  drawStem(ctx, halfWidth + 8.5, halfWidth + 2.5, glassHeight + 10.5);
+  ctx.lineTo(5.5, glassHeight + 10.5);
+  ctx.lineTo(5.5, 3.5);
   ctx.stroke();
   ctx.fill();
 }
@@ -138,6 +153,7 @@ const drawGlass = (glassType) => {
       drawHighOrLowball();
       break;
     case "champagne":
+      drawChampagne();
       break;
     case "martini":
       drawMartini();
@@ -148,7 +164,8 @@ const drawGlass = (glassType) => {
 
 const drawDrink = (json) => {
   const glassType = json[0];
-  glassHeight = glassTypeHeightMap[glassType];
+  glassHeight = glassTypeSizeMap[glassType][0];
+  glassWidth = glassTypeSizeMap[glassType][1];
   let drink = json[1];
   ctx.clearRect(0,0,1000,1000);
   drink = convertToPercent(glassType, drink);
@@ -159,103 +176,3 @@ const drawDrink = (json) => {
   
   drawGlass(glassType);
 };
-
-const formToJSON = () => {
-  let drinkJSON = '[';
-  let first = true;
-  const children = document.querySelector('#form').children;
-  for(let i = 0; i < children.length; i++) {
-    let child = children[i];
-    if (!first) {
-      drinkJSON += ','
-    } else {
-      first = false;
-    }
-    drinkJSON += '["';
-    drinkJSON += child.querySelector('select.drink').value;
-    drinkJSON += '",';
-    drinkJSON += child.querySelector('input.amount').value;
-    drinkJSON += ']';
-  }
-  drinkJSON += ']';
-  let ret = '["' + document.querySelector('#glassTypes').value + '",' + drinkJSON+ ']'
-  return JSON.parse(ret);
-}
-
-const handleClick = () => {
-  drawDrink(formToJSON());
-};
-
-const surpriseMe = () => {
-  const rows = document.querySelector('#form').children;
-  const drinks = Object.keys(drinkMap).sort();
-  for(let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-    let index = Math.floor(Math.random() * Object.keys(drinkMap).length);
-    row.querySelector('select.drink').value = drinks[index];
-    row.querySelector('input.amount').value = Math.ceil(Math.random()*10);
-  }
-  handleClick();
-}
-
-const removeRow = (id) => {
-  const parent = document.querySelector('#form');
-  const row = parent.querySelector(`#row${id}`);
-  if (row && parent.childElementCount > 1) {
-    parent.removeChild(row);
-  }
-}
-
-const addRow = (siblingId) => {
-  const parent = document.querySelector('#form');
-  const id = parent.childElementCount + 1;
-
-  const rowDiv = document.createElement('div');
-  rowDiv.classList.add('formrow');
-  rowDiv.id = `row${id}`;
-
-  const drinkList = document.createElement('select');
-  drinkList.classList.add('drink');
-  drinkList.innerHTML = selectContents;
-  rowDiv.appendChild(drinkList);
-
-  const drinkAmount = document.createElement('input');
-  drinkAmount.classList.add('amount');
-  drinkAmount.setAttribute('type','number');
-  drinkAmount.value = 1;
-  rowDiv.appendChild(drinkAmount);
-
-  const minus = document.createElement('button');
-  minus.innerHTML = '-';
-  minus.onclick = () => { removeRow(id); }
-  rowDiv.appendChild(minus);
-
-  const plus = document.createElement('button');
-  plus.innerHTML = '+';
-  plus.onclick = () => { addRow(id); };
-  rowDiv.appendChild(plus);
-
-  if (!siblingId) {
-    parent.appendChild(rowDiv);
-    return;
-  }
-
-  const sibling = parent.querySelector(`#row${siblingId}`);
-  if (sibling && sibling.nextSibling) {
-    parent.insertBefore(rowDiv, sibling.nextSibling);
-    return;
-  }
-
-  parent.appendChild(rowDiv);
-
-}
-
-const main = () => {
-  ctx = document.getElementById('canvas').getContext('2d');
-  ctx.strokeStyle = '#000000';
-  document.querySelector('#submit').onclick = handleClick;
-  document.querySelector('#random').onclick = surpriseMe;
-  addRow();
-};
-
-window.onload = main;
