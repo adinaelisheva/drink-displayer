@@ -117,6 +117,9 @@ const drinkMap = {
     'color': '#C2BA99',
     'pattern': 'dots',
     'patternColor': '#FFFFFF',
+  },
+  "simple syrup": {
+    'color': '#F5F3E4',
   }
 };
 
