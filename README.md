@@ -2,9 +2,7 @@
 
 HTML Canvas app to display drink recipes in mock blueprint form. 
 
-![Whiskey Sour](whiskeysour.png)
-
-![Mimosa](mimosa.png)
+![Demo drinks](gooddrinks.png)
 
 Can be saved to JSON or images. 
 
