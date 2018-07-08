@@ -91,43 +91,65 @@ const drawStem = (ctx, x1, x2, y) => {
 const drawMartini = () => {
   const halfWidth = Math.floor(glassWidth/2);
   
-  // block out the drink outside of the glass
-  ctx.globalCompositeOperation = 'destination-in';
-  ctx.moveTo(10.5,10.5);
-  ctx.lineTo(glassWidth + 10.5, 10.5);
-  ctx.lineTo(halfWidth + 5.5, glassHeight);
-  ctx.lineTo(10.5, 10.5);
-  ctx.fill();
-  
-  // draw the glass itself
-  ctx.globalCompositeOperation = 'source-over';
-  ctx.beginPath();
+  //upper left corner
   ctx.moveTo(2.5,3.5);
+  
+  //inner outline
   ctx.lineTo(8.5,3.5);
   ctx.lineTo(halfWidth + 5.5, glassHeight);
   ctx.lineTo(glassWidth + 12.5, 3.5);
+  
+  //remove the drink outside the glass
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.fill();
+  ctx.globalCompositeOperation = 'source-over';
+  
+  //upper right corner
   ctx.lineTo(glassWidth + 18.5, 3.5);
+  
+  //outer outline (with stem)
   ctx.lineTo(halfWidth + 8.5, glassHeight + 5.5);
   drawStem(ctx, halfWidth + 8.5, halfWidth + 2.5, glassHeight + 5.5);
   ctx.lineTo(2.5, 3.5);
+  
   ctx.stroke();
   ctx.fill();
 };
 
 const drawChampagne = () => {
   const halfWidth = Math.floor(glassWidth/2);
+  const r1x = 35;
+  const r2x = glassWidth - 17; 
+  const ry = glassHeight - 20;
   
+  //upper left corner
   ctx.moveTo(5.5,3.5);
+  
+  // inner outline
   ctx.lineTo(10.5,3.5);
-  ctx.lineTo(10.5, glassHeight + 5.5);
-  ctx.lineTo(glassWidth + 8.5, glassHeight + 5.5);
+  ctx.lineTo(10.5, ry);
+  ctx.arc(r1x, ry, 25, Math.PI, 0.5*Math.PI, true);
+  ctx.lineTo(r2x, glassHeight + 5.5);
+  ctx.arc(r2x, ry, 25, 0.5*Math.PI, 0, true);
   ctx.lineTo(glassWidth + 8.5, 3.5);
+  
+  //remove the drink outside the glass
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.fill();
+  ctx.globalCompositeOperation = 'source-over';
+
+  //upper right corner
   ctx.lineTo(glassWidth + 13.5, 3.5);
-  ctx.lineTo(glassWidth + 13.5, glassHeight + 10.5);
+  
+  //outer outline (with stem)
+  ctx.lineTo(glassWidth + 13.5, ry);
+  ctx.arc(r2x, ry, 30, 0, 0.5*Math.PI);
   ctx.lineTo(halfWidth + 8.5, glassHeight + 10.5);
   drawStem(ctx, halfWidth + 8.5, halfWidth + 2.5, glassHeight + 10.5);
-  ctx.lineTo(5.5, glassHeight + 10.5);
+  ctx.lineTo(r1x, glassHeight + 10.5);
+  ctx.arc(r1x, ry, 30, 0.5*Math.PI, Math.PI);
   ctx.lineTo(5.5, 3.5);
+  
   ctx.stroke();
   ctx.fill();
 }
