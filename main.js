@@ -11,6 +11,8 @@ const main = () => {
   ctx.strokeStyle = '#000000';
   document.querySelector('#submit').onclick = handleClick;
   document.querySelector('#random').onclick = surpriseMe;
+  document.querySelector('#saveImg').onclick = saveImage;
+  document.querySelector('#saveJSON').onclick = saveJSON;
   addRow();
 };
 

@@ -1,4 +1,4 @@
-const formToJSON = () => {
+const formToJSONString = () => {
   let drinkJSON = '[';
   let first = true;
   const children = document.querySelector('#form').children;
@@ -16,8 +16,11 @@ const formToJSON = () => {
     drinkJSON += ']';
   }
   drinkJSON += ']';
-  let ret = '["' + document.querySelector('#glassTypes').value + '",' + drinkJSON+ ']'
-  return JSON.parse(ret);
+  return '["' + document.querySelector('#glassTypes').value + '",' + drinkJSON+ ']';
+}
+
+const formToJSON = () => {
+  return JSON.parse(formToJSONString());
 }
 
 const handleClick = () => {
@@ -86,4 +89,21 @@ const addRow = (siblingId) => {
 
   parent.appendChild(rowDiv);
 
+}
+
+const download = (content, fileName, contentType) => {
+  var a = document.createElement("a");
+  var file = new Blob([content], {type: contentType});
+  a.href = URL.createObjectURL(file);
+  a.download = fileName;
+  a.click();
+}
+
+const saveImage = () => {
+  const imgData = document.getElementById('canvas').toDataURL('image/png');
+  window.location.href = imgData.replace('image/png', 'application/octet-stream');
+}
+
+const saveJSON = () => {
+  download(formToJSONString(), 'drink.json', 'application/json');
 }
