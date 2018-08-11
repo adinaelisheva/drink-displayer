@@ -29,10 +29,24 @@ const handleClick = () => {
 
 const surpriseMe = () => {
   const rows = document.querySelector('#form').children;
+
+  if (rows.length < 3) {
+    // add more if the drink will be boring
+    const goalRows = Math.floor(Math.random() * 3) + 3;
+    const rowsToAdd = goalRows - rows.length;
+    for(let i = 0; i < rowsToAdd; i++) {
+      addRow(rows[0].id);
+    }
+  }
+
+  const glasses = Object.keys(glassTypeSizeMap); 
+  let index = Math.floor(Math.random() * glasses.length);
+  document.querySelector('#glassTypes').value = glasses[index];
+
   const drinks = Object.keys(drinkMap).sort();
   for(let i = 0; i < rows.length; i++) {
     const row = rows[i];
-    let index = Math.floor(Math.random() * Object.keys(drinkMap).length);
+    index = Math.floor(Math.random() * drinks.length);
     row.querySelector('select.drink').value = drinks[index];
     row.querySelector('input.amount').value = Math.ceil(Math.random()*10);
   }
