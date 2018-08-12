@@ -1,4 +1,5 @@
 const formToJSONString = () => {
+  const glassJSON = `"${document.querySelector('#glassTypes').value}",`;
   let drinkJSON = '[';
   let first = true;
   const children = document.querySelector('#form').children;
@@ -16,7 +17,8 @@ const formToJSONString = () => {
     drinkJSON += ']';
   }
   drinkJSON += ']';
-  return '["' + document.querySelector('#glassTypes').value + '",' + drinkJSON+ ']';
+  const nameJSON = `,"${document.querySelector('#name').value}"`;
+  return `[${glassJSON}${drinkJSON}${nameJSON}]`;
 }
 
 const formToJSON = () => {
