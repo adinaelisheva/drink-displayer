@@ -39,7 +39,7 @@ button.info {
 }
 
 #canvas {
-  margin-top: 25px;
+  margin-top: 5px;
   width: 200px;
   height: 350px;
 }
@@ -50,4 +50,14 @@ button.info {
 
 #info h3 {
   margin-top: 0;
+}
+
+#drinkname {
+  margin-top: 25px;
+  margin-left: 30px;
+  font-family: fantasy;
+}
+
+.hidden {
+  opacity: 0;
 }

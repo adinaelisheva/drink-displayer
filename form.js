@@ -50,7 +50,14 @@ const surpriseMe = () => {
     row.querySelector('select.drink').value = drinks[index];
     row.querySelector('input.amount').value = Math.ceil(Math.random()*10);
   }
+
   handleClick();
+
+  const first = Math.floor(Math.random() * firstWords.length);
+  const second = Math.floor(Math.random() * secondWords.length);;
+  const nameContainer = document.querySelector('#drinkname'); 
+  nameContainer.innerHTML = `${firstWords[first]} ${secondWords[second]}`;
+  nameContainer.classList.remove('hidden');
 }
 
 const removeRow = (id) => {

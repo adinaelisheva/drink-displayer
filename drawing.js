@@ -185,6 +185,7 @@ const drawGlass = (glassType) => {
 }
 
 const drawDrink = (json) => {
+  document.querySelector('#drinkname').classList.add('hidden');
   const glassType = json[0];
   glassHeight = glassTypeSizeMap[glassType][0];
   glassWidth = glassTypeSizeMap[glassType][1];
