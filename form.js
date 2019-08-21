@@ -53,13 +53,12 @@ const surpriseMe = () => {
     row.querySelector('input.amount').value = Math.ceil(Math.random()*10);
   }
 
-  handleClick();
-
   const first = Math.floor(Math.random() * firstWords.length);
   const second = Math.floor(Math.random() * secondWords.length);;
-  const nameContainer = document.querySelector('#drinkname'); 
-  nameContainer.innerHTML = `${firstWords[first]} ${secondWords[second]}`;
-  nameContainer.classList.remove('hidden');
+  document.querySelector('#name').value = `${firstWords[first]} ${secondWords[second]}`;
+
+  handleClick();
+
 }
 
 const removeRow = (id) => {

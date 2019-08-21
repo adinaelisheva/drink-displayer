@@ -185,7 +185,6 @@ const drawGlass = (glassType) => {
 }
 
 const drawDrink = (json) => {
-  document.querySelector('#drinkname').classList.add('hidden');
   const glassType = json[0];
   glassHeight = glassTypeSizeMap[glassType][0];
   glassWidth = glassTypeSizeMap[glassType][1];
@@ -199,7 +198,9 @@ const drawDrink = (json) => {
   
   drawGlass(glassType);
 
+  const stemHeight = glassType.endsWith('ball') ? 0 : 100;
+
   ctx.font="14px monospace";
   ctx.fillStyle = "black";
-  ctx.fillText(json[2],0,330);
+  ctx.fillText(json[2],10,glassHeight + stemHeight + 50);
 };
