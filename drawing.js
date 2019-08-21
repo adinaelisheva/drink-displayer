@@ -184,6 +184,34 @@ const drawGlass = (glassType) => {
   ctx.stroke();
 }
 
+const drawName = (name, x, y) => {
+  ctx.font="14px monospace";
+  ctx.fillStyle = "black";
+  
+  const lineLen = 40;
+
+  if (name.length <= lineLen) {
+    ctx.fillText(name, x, y);
+    return;
+  }
+ 
+  while (name.length > lineLen) {
+    // Try to find a breaking char close to lineLen
+    let i = lineLen;
+    while (name[i] !== ' ' && name[i] !== '-') {
+      i--;
+    }
+    if (i === -1) {
+      i = lineLen;
+    }
+    const nextLine = name.substring(0, i).trim();
+    name = name.substring(i).trim();
+    ctx.fillText(nextLine, x, y);
+    y += 15;
+  }
+  ctx.fillText(name, x, y);
+};
+
 const drawDrink = (json) => {
   const glassType = json[0];
   glassHeight = glassTypeSizeMap[glassType][0];
@@ -199,8 +227,6 @@ const drawDrink = (json) => {
   drawGlass(glassType);
 
   const stemHeight = glassType.endsWith('ball') ? 0 : 100;
-
-  ctx.font="14px monospace";
-  ctx.fillStyle = "black";
-  ctx.fillText(json[2],10,glassHeight + stemHeight + 50);
+  
+  drawName(json[2],10,glassHeight + stemHeight + 50);
 };
