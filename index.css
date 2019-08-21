@@ -52,6 +52,7 @@ button.info {
   margin-top: 0;
 }
 
+<<<<<<< HEAD
 #drinkname {
   margin-top: 25px;
   margin-left: 30px;
@@ -61,3 +62,16 @@ button.info {
 .hidden {
   opacity: 0;
 }
+.namerow {
+  font-size: 14px;
+  height: 30px;
+  line-height: 30px;
+  align-items: baseline;
+}
+
+input#name {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  flex-grow: 1;
+}
+

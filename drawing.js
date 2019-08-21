@@ -198,4 +198,8 @@ const drawDrink = (json) => {
   });
   
   drawGlass(glassType);
+
+  ctx.font="14px monospace";
+  ctx.fillStyle = "black";
+  ctx.fillText(json[2],0,330);
 };
