@@ -7,15 +7,13 @@ const selectContents = (() => {
 })();
 
 const main = () => {
-  ctx = document.getElementById('canvas').getContext('2d');
-  ctx.strokeStyle = '#000000';
-  document.querySelector('#submit').onclick = handleClick;
+  document.querySelector('#submit').onclick = drawDrinks;
   document.querySelector('#random').onclick = surpriseMe;
   document.querySelector('#saveImg').onclick = saveImage;
   document.querySelector('#saveJSON').onclick = saveJSON;
   document.querySelector('#addDrink').onclick = addDrink;
   document.querySelector('#deleteDrink').onclick = deleteDrink;
-  addRow();
+  addRow(document.querySelector('.drinkContainer'));
 };
 
 window.onload = main;

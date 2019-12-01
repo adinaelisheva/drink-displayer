@@ -212,11 +212,13 @@ const drawName = (name, x, y) => {
   ctx.fillText(name, x, y);
 };
 
-const drawDrink = (json) => {
+const drawDrink = (container, json) => {
   const glassType = json[0];
   glassHeight = glassTypeSizeMap[glassType][0];
   glassWidth = glassTypeSizeMap[glassType][1];
   let drink = json[1];
+  ctx = container.querySelector('#canvas').getContext('2d');
+  ctx.strokeStyle = '#000000';
   ctx.clearRect(0,0,1000,1000);
   drink = convertToPercent(glassType, drink);
   let pos = 10;

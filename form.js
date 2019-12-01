@@ -1,8 +1,8 @@
-const formToJSONString = () => {
-  const glassJSON = `"${document.querySelector('#glassTypes').value}",`;
+const formToJSONString = (container) => {
+  const glassJSON = `"${container.querySelector('#glassTypes').value}",`;
   let drinkJSON = '[';
   let first = true;
-  const children = document.querySelector('#form').children;
+  const children = container.querySelector('#form').children;
   for(let i = 0; i < children.length; i++) {
     let child = children[i];
     if (!first) {
@@ -17,19 +17,25 @@ const formToJSONString = () => {
     drinkJSON += ']';
   }
   drinkJSON += ']';
-  const nameJSON = `,"${document.querySelector('#name').value}"`;
+  const nameJSON = `,"${container.querySelector('#name').value}"`;
   return `[${glassJSON}${drinkJSON}${nameJSON}]`;
 }
 
-const formToJSON = () => {
-  return JSON.parse(formToJSONString());
+const formToJSON = (container) => {
+  return JSON.parse(formToJSONString(container));
 }
 
-const handleClick = () => {
-  drawDrink(formToJSON());
+const drawDrinks = (event, drinkLimit) => {
+  const drinks =  document.querySelectorAll('.drinkContainer');
+  const limit = drinkLimit ? drinkLimit : drinks.length;
+  for (let i = 0; i < limit; i++) {
+    drawDrink(drinks[i], formToJSON(drinks[i]));
+  }
 };
 
 const surpriseMe = () => {
+  // Surprise me only applies to drink #1
+  const parent = document.querySelector('.drinkContainer');
   const rows = document.querySelector('#form').children;
 
   if (rows.length < 3) {
@@ -37,7 +43,7 @@ const surpriseMe = () => {
     const goalRows = Math.floor(Math.random() * 3) + 3;
     const rowsToAdd = goalRows - rows.length;
     for(let i = 0; i < rowsToAdd; i++) {
-      addRow(rows[0].id);
+      addRow(parent, rows[0].id);
     }
   }
 
@@ -57,20 +63,21 @@ const surpriseMe = () => {
   const second = Math.floor(Math.random() * secondWords.length);;
   document.querySelector('#name').value = `${firstWords[first]} ${secondWords[second]}`;
 
-  handleClick();
+  // no event to pass in, but limit it to drawing 1 drink
+  drawDrinks(null, 1);
 
 }
 
-const removeRow = (id) => {
-  const parent = document.querySelector('#form');
+const removeRow = (container, id) => {
+  const parent = container.querySelector('#form');
   const row = parent.querySelector(`#row${id}`);
   if (row && parent.childElementCount > 1) {
     parent.removeChild(row);
   }
 }
 
-const addRow = (siblingId) => {
-  const parent = document.querySelector('#form');
+const addRow = (container, siblingId) => {
+  const parent = container.querySelector('#form');
   const id = parent.childElementCount + 1;
 
   const rowDiv = document.createElement('div');
@@ -90,12 +97,12 @@ const addRow = (siblingId) => {
 
   const minus = document.createElement('button');
   minus.innerHTML = '-';
-  minus.onclick = () => { removeRow(id); }
+  minus.onclick = () => { removeRow(container, id); }
   rowDiv.appendChild(minus);
 
   const plus = document.createElement('button');
   plus.innerHTML = '+';
-  plus.onclick = () => { addRow(id); };
+  plus.onclick = () => { addRow(container, id); };
   rowDiv.appendChild(plus);
 
   if (!siblingId) {
@@ -127,13 +134,32 @@ const saveImage = () => {
 }
 
 const saveJSON = () => {
-  download(formToJSONString(), 'drink.json', 'application/json');
+  const drinks =  document.querySelectorAll('.drinkContainer');
+  let jsonString = '[';
+  for (let i = 0; i < drinks.length; i++) {
+    if (i > 0) {
+      jsonString += ',';
+    }
+    jsonString += formToJSONString(drinks[i]);
+  }
+  jsonString += ']';
+  download(jsonString, 'drink.json', 'application/json');  
 }
 
 const addDrink = () => {
   const buttonContainer = document.querySelector('.containerButtons');
   const drinkContainer = document.querySelector('.drinkContainer');
-  buttonContainer.insertAdjacentElement('beforebegin', drinkContainer.cloneNode(true));
+  const newDrinkContainer = drinkContainer.cloneNode(true);
+
+  // delete the copied rows and add a new one to start
+  const formRows = newDrinkContainer.querySelectorAll('#form .formrow');
+  for (let i = 0; i < formRows.length; i++) {
+    const row = formRows[i];
+    row.parentElement.removeChild(row);
+  }
+  addRow(newDrinkContainer);
+
+  buttonContainer.insertAdjacentElement('beforebegin', newDrinkContainer);
   
   // There will always be > 1 drink after adding one, so enable the delete button
   document.querySelector('#deleteDrink').removeAttribute('disabled');
