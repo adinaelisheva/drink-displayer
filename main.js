@@ -13,6 +13,8 @@ const main = () => {
   document.querySelector('#random').onclick = surpriseMe;
   document.querySelector('#saveImg').onclick = saveImage;
   document.querySelector('#saveJSON').onclick = saveJSON;
+  document.querySelector('#addDrink').onclick = addDrink;
+  document.querySelector('#deleteDrink').onclick = deleteDrink;
   addRow();
 };
 

@@ -1,6 +1,13 @@
-#main {
+body {
+  background: #eee;
+}
+
+.drink {
+  background: white;
   display: flex;
   flex-direction: column;
+  margin-right: 20px;
+  padding: 20px;
 }
 
 .formrow {
@@ -12,8 +19,23 @@
   margin-right: 5px;
 }
 
-#container {
+.container {
   display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+.drinkcontainer {
+  display: flex;
+}
+
+.containerButtons {
+  display: flex;
+  flex-direction: column;
+}
+
+.containerButtons button {
+  margin-bottom: 10px;
 }
 
 #error {

@@ -129,3 +129,23 @@ const saveImage = () => {
 const saveJSON = () => {
   download(formToJSONString(), 'drink.json', 'application/json');
 }
+
+const addDrink = () => {
+  const buttonContainer = document.querySelector('.containerButtons');
+  const drinkContainer = document.querySelector('.drinkContainer');
+  buttonContainer.insertAdjacentElement('beforebegin', drinkContainer.cloneNode(true));
+  
+  // There will always be > 1 drink after adding one, so enable the delete button
+  document.querySelector('#deleteDrink').removeAttribute('disabled');
+
+  const container = document.querySelector('.container');
+  container.scrollLeft = container.scrollWidth;
+}
+const deleteDrink = () => {
+  const drinkContainers = document.querySelectorAll('.drinkContainer');
+  if(drinkContainers.length == 2) {
+    document.querySelector('#deleteDrink').setAttribute('disabled', '');
+  }
+  const toDelete = drinkContainers[drinkContainers.length - 1];
+  toDelete.parentElement.removeChild(toDelete);
+}

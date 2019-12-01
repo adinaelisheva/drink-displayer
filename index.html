@@ -8,25 +8,33 @@
     <link rel="stylesheet" type="text/css" href="index.css"> </head>
   </head>
   <body>
-    <div id="container">
-      <div id="main">
-        <div class="formrow">
-          <select id="glassTypes">
-            <option value="champagne">champagne flute</option>
-            <option value="martini">martini</option>
-            <option value="highball">highball</option>
-            <option value="lowball">lowball</option>
-          </select>
+    <div class="container">
+      <div class="drinkcontainer">
+        <div class="drink">
+          <div class="formrow">
+            <select id="glassTypes">
+              <option value="champagne">champagne flute</option>
+              <option value="martini">martini</option>
+              <option value="highball">highball</option>
+              <option value="lowball">lowball</option>
+            </select>
+          </div>
+          <div id="form"></div>
+          <div class="formrow namerow">Name: <input id="name"></div>
+          <canvas id="canvas" width="180" height="365"></canvas>
         </div>
-        <div id="form"></div>
-        <div class="formrow namerow">Name: <input id="name"></div>
-        <button id="submit" class="info">Draw</button>
-        <button id="random" class="info">Surprise me!</button>
-        <canvas id="canvas" width="180" height="365"></canvas>
-        <button id="saveImg" class="info">Save Image</button>
-        <button id="saveJSON" class="info">Save JSON</button>
       </div>
-      <div id="info"></div>
+      <div class="containerButtons">
+        <button id="addDrink" class="info">Add drink</button>
+        <button id="deleteDrink" class="info" disabled>Delete drink</button>
+      </div>
+    </div>
+    <div id="sharedControls">
+      <div id="controlrow"></div>
+      <button id="submit" class="info">Draw</button>
+      <button id="random" class="info">Surprise me!</button>
+      <button id="saveImg" class="info">Save Image</button>
+      <button id="saveJSON" class="info">Save JSON</button>
     </div>
   </body>
 </html>
