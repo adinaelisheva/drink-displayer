@@ -129,8 +129,11 @@ const download = (content, fileName, contentType) => {
 }
 
 const saveImage = () => {
-  const imgData = document.getElementById('canvas').toDataURL('image/png');
-  window.location.href = imgData.replace('image/png', 'application/octet-stream');
+  const drinks =  document.querySelectorAll('.drinkContainer');
+  for (let i = 0; i < drinks.length; i++) {
+    const imgData = drinks[i].querySelector('#canvas').toDataURL('image/png');
+    window.location.href = imgData.replace('image/png', 'application/octet-stream');
+  }
 }
 
 const saveJSON = () => {
