@@ -188,7 +188,7 @@ const drawName = (name, x, y) => {
   ctx.font="14px monospace";
   ctx.fillStyle = "black";
   
-  const lineLen = 40;
+  const lineLen = 19;
 
   if (name.length <= lineLen) {
     ctx.fillText(name, x, y);
@@ -198,7 +198,7 @@ const drawName = (name, x, y) => {
   while (name.length > lineLen) {
     // Try to find a breaking char close to lineLen
     let i = lineLen;
-    while (name[i] !== ' ' && name[i] !== '-') {
+    while (name[i] !== ' ' && name[i] !== '-' && i >= 0) {
       i--;
     }
     if (i === -1) {
