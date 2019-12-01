@@ -40,8 +40,9 @@ button.info {
 
 #canvas {
   margin-top: 5px;
-  width: 400px;
-  height: 400px;
+  margin-bottom: 5px;
+  width: 180px;
+  height: 365px;
 }
 
 #info {
