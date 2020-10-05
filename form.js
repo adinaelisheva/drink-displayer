@@ -1,4 +1,4 @@
-const formToJSONString = (container) => {
+function formToJSONString(container) {
   const glassJSON = `"${container.querySelector('#glassTypes').value}",`;
   let drinkJSON = '[';
   let first = true;
@@ -21,11 +21,11 @@ const formToJSONString = (container) => {
   return `[${glassJSON}${drinkJSON}${nameJSON}]`;
 }
 
-const formToJSON = (container) => {
+function formToJSON(container) {
   return JSON.parse(formToJSONString(container));
 }
 
-const drawDrinks = (event, drinkLimit) => {
+function drawDrinks(event, drinkLimit) {
   const drinks =  document.querySelectorAll('.drinkContainer');
   const limit = drinkLimit ? drinkLimit : drinks.length;
   for (let i = 0; i < limit; i++) {
@@ -33,7 +33,7 @@ const drawDrinks = (event, drinkLimit) => {
   }
 };
 
-const surpriseMe = () => {
+function surpriseMe() {
   // Surprise me only applies to drink #1
   const parent = document.querySelector('.drinkContainer');
   const rows = document.querySelector('#form').children;
@@ -68,7 +68,7 @@ const surpriseMe = () => {
 
 }
 
-const removeRow = (container, id) => {
+function removeRow(container, id) {
   const parent = container.querySelector('#form');
   const row = parent.querySelector(`#row${id}`);
   if (row && parent.childElementCount > 1) {
@@ -76,7 +76,7 @@ const removeRow = (container, id) => {
   }
 }
 
-const addRow = (container, siblingId) => {
+function addRow(container, siblingId) {
   const parent = container.querySelector('#form');
   const id = parent.childElementCount + 1;
 
@@ -120,7 +120,7 @@ const addRow = (container, siblingId) => {
 
 }
 
-const download = (content, fileName, contentType) => {
+function download(content, fileName, contentType) {
   var a = document.createElement("a");
   var file = new Blob([content], {type: contentType});
   a.href = URL.createObjectURL(file);
@@ -128,15 +128,23 @@ const download = (content, fileName, contentType) => {
   a.click();
 }
 
-const saveImage = () => {
-  const drinks =  document.querySelectorAll('.drinkContainer');
-  for (let i = 0; i < drinks.length; i++) {
-    const imgData = drinks[i].querySelector('#canvas').toDataURL('image/png');
-    window.location.href = imgData.replace('image/png', 'application/octet-stream');
-  }
+function saveImages() {
+  saveImage(0);
 }
 
-const saveJSON = () => {
+function saveImage(i) {
+  const drinks =  document.querySelectorAll('.drinkContainer');
+  if (i === drinks.length) {
+    return;
+  }
+  const imgData = drinks[i].querySelector('#canvas').toDataURL('image/png');
+  window.location.href = imgData.replace('image/png', 'application/octet-stream');
+  setTimeout(() => {
+    saveImage(i+1);
+  }, 500);
+}
+
+function saveJSON() {
   const drinks =  document.querySelectorAll('.drinkContainer');
   let jsonString = '[';
   for (let i = 0; i < drinks.length; i++) {
@@ -149,7 +157,7 @@ const saveJSON = () => {
   download(jsonString, 'drink.json', 'application/json');  
 }
 
-const addDrink = () => {
+function addDrink() {
   const buttonContainer = document.querySelector('.containerButtons');
   const drinkContainer = document.querySelector('.drinkContainer');
   const newDrinkContainer = drinkContainer.cloneNode(true);
@@ -170,7 +178,7 @@ const addDrink = () => {
   const container = document.querySelector('.container');
   container.scrollLeft = container.scrollWidth;
 }
-const deleteDrink = () => {
+function deleteDrink() {
   const drinkContainers = document.querySelectorAll('.drinkContainer');
   if(drinkContainers.length == 2) {
     document.querySelector('#deleteDrink').setAttribute('disabled', '');

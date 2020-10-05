@@ -9,7 +9,7 @@ const selectContents = (() => {
 const main = () => {
   document.querySelector('#submit').onclick = drawDrinks;
   document.querySelector('#random').onclick = surpriseMe;
-  document.querySelector('#saveImg').onclick = saveImage;
+  document.querySelector('#saveImg').onclick = saveImages;
   document.querySelector('#saveJSON').onclick = saveJSON;
   document.querySelector('#addDrink').onclick = addDrink;
   document.querySelector('#deleteDrink').onclick = deleteDrink;

@@ -2,7 +2,7 @@ body {
   background: #eee;
 }
 
-.drink {
+div.drink {
   background: white;
   display: flex;
   flex-direction: column;

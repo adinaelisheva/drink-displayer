@@ -3,7 +3,7 @@ let glassWidth;
 
 let ctx;
 
-const convertToPercent = (glassType, drink) => {
+function convertToPercent(glassType, drink) {
   const total = drink.reduce((curVal, item) => {
     return curVal + item[1];
   }, 0);
@@ -26,7 +26,7 @@ const convertToPercent = (glassType, drink) => {
   return drink;
 };
 
-const fillWithPattern = (drinkInfo, start, height) => {
+function fillWithPattern(drinkInfo, start, height) {
   if (!drinkInfo.pattern) {
     return;
   }
@@ -42,7 +42,7 @@ const fillWithPattern = (drinkInfo, start, height) => {
   ctx.globalCompositeOperation = 'source-over';
 }
 
-const fillWithDots = (x,y,width,height,color,offset) => {
+function fillWithDots(x,y,width,height,color,offset) {
   ctx.fillStyle = color;
   let shiftAmt = 5;
   for(let j = y + 5; j < y + height; j+=7) {
@@ -57,7 +57,7 @@ const fillWithDots = (x,y,width,height,color,offset) => {
   }
 };
 
-const fillWithStripes = (x,y,width,height,color) => {
+function fillWithStripes(x,y,width,height,color) {
   ctx.strokeStyle = color;
   for (let i = x; i < x + width + height; i+= 7) {
     ctx.beginPath();
@@ -69,7 +69,7 @@ const fillWithStripes = (x,y,width,height,color) => {
   ctx.strokeStyle = '#000000';
 };
 
-const drawLayer = (layer, start) => {
+function drawLayer(layer, start) {
   const height = Math.floor(layer[1] * glassHeight);
   const drinkInfo = drinkMap[layer[0]];
   ctx.fillStyle = drinkInfo.color;
@@ -79,7 +79,7 @@ const drawLayer = (layer, start) => {
   return start + height;
 };
 
-const drawStem = (ctx, x1, x2, y) => {
+function drawStem(ctx, x1, x2, y) {
   // Note that this is going from right to left, so down in x.
   ctx.lineTo(x1, y + 100);
   ctx.lineTo(x1 + 20, y + 115);
@@ -88,7 +88,7 @@ const drawStem = (ctx, x1, x2, y) => {
   ctx.lineTo(x2, y);
 };
 
-const drawMartini = () => {
+function drawMartini() {
   const halfWidth = Math.floor(glassWidth/2);
   
   //upper left corner
@@ -116,7 +116,7 @@ const drawMartini = () => {
   ctx.fill();
 };
 
-const drawChampagne = () => {
+function drawChampagne() {
   const halfWidth = Math.floor(glassWidth/2);
   const r1x = 35;
   const r2x = glassWidth - 17; 
@@ -154,7 +154,7 @@ const drawChampagne = () => {
   ctx.fill();
 }
 
-const drawHighOrLowball = () => {
+function drawHighOrLowball() {
   ctx.moveTo(10.5,10.5);
   ctx.lineTo(10.5,3.5);
   ctx.lineTo(5.5,3.5);
@@ -165,7 +165,7 @@ const drawHighOrLowball = () => {
   ctx.lineTo(glassWidth + 10.5,10.5);
 }
 
-const drawGlass = (glassType) => {
+function drawGlass(glassType) {
   ctx.fillStyle = '#FFFFFF';
   ctx.strokeStyle = '#000000';
   ctx.beginPath();
@@ -184,7 +184,7 @@ const drawGlass = (glassType) => {
   ctx.stroke();
 }
 
-const drawName = (name, x, y) => {
+function drawName(name, x, y) {
   ctx.font="14px monospace";
   ctx.fillStyle = "black";
   
@@ -212,7 +212,7 @@ const drawName = (name, x, y) => {
   ctx.fillText(name, x, y);
 };
 
-const drawDrink = (container, json) => {
+function drawDrink(container, json) {
   const glassType = json[0];
   glassHeight = glassTypeSizeMap[glassType][0];
   glassWidth = glassTypeSizeMap[glassType][1];
