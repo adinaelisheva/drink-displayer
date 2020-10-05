@@ -74,14 +74,23 @@ function removeRow(container, id) {
   if (row && parent.childElementCount > 1) {
     parent.removeChild(row);
   }
+  if (parent.childElementCount === 1) {
+    parent.querySelector('.minusButton').setAttribute('disabled', 'true');
+  }
 }
 
 function addRow(container, siblingId) {
   const parent = container.querySelector('#form');
   const id = parent.childElementCount + 1;
 
+  if (parent.childElementCount === 1) {
+    // enable the "minus" button
+    parent.querySelector('.minusButton').removeAttribute('disabled');
+  }
+
   const rowDiv = document.createElement('div');
   rowDiv.classList.add('formrow');
+  rowDiv.classList.add('ingredient');
   rowDiv.id = `row${id}`;
 
   const drinkList = document.createElement('select');
@@ -97,6 +106,10 @@ function addRow(container, siblingId) {
 
   const minus = document.createElement('button');
   minus.innerHTML = '-';
+  minus.classList.add('minusButton');
+  if (parent.childElementCount === 0) {
+    minus.setAttribute('disabled', 'true');
+  }
   minus.onclick = () => { removeRow(container, id); }
   rowDiv.appendChild(minus);
 
@@ -121,7 +134,7 @@ function addRow(container, siblingId) {
 }
 
 function download(content, fileName, contentType) {
-  var a = document.createElement("a");
+  var a = document.createElement('a');
   var file = new Blob([content], {type: contentType});
   a.href = URL.createObjectURL(file);
   a.download = fileName;
@@ -129,6 +142,7 @@ function download(content, fileName, contentType) {
 }
 
 function saveImages() {
+  drawDrinks();
   saveImage(0);
 }
 
@@ -154,7 +168,7 @@ function saveJSON() {
     jsonString += formToJSONString(drinks[i]);
   }
   jsonString += ']';
-  download(jsonString, 'drink.json', 'application/json');  
+  download(jsonString, 'drinks.json', 'application/json');  
 }
 
 function addDrink() {
