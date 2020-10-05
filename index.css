@@ -56,6 +56,11 @@ button.info {
   width: 105px;
 }
 
+button.info.drinkQuantity {
+  font-size: 24px;
+  width: 38px;
+}
+
 #random {
   margin-top: 10px;
 }

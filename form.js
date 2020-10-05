@@ -43,7 +43,7 @@ function surpriseMe() {
     const goalRows = Math.floor(Math.random() * 3) + 3;
     const rowsToAdd = goalRows - rows.length;
     for(let i = 0; i < rowsToAdd; i++) {
-      addRow(parent, rows[0].id);
+      addRow(null, parent);
     }
   }
 
@@ -175,6 +175,7 @@ function addDrink() {
     row.parentElement.removeChild(row);
   }
   addRow(null, newDrinkContainer);
+  newDrinkContainer.querySelector('#name').value = '';
 
   buttonContainer.insertAdjacentElement('beforebegin', newDrinkContainer);
   
