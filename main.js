@@ -13,7 +13,7 @@ const main = () => {
   document.querySelector('#saveJSON').onclick = saveJSON;
   document.querySelector('#addDrink').onclick = addDrink;
   document.querySelector('#deleteDrink').onclick = deleteDrink;
-  addRow(document.querySelector('.drinkContainer'));
+  addRow(null, document.querySelector('.drinkContainer'));
 };
 
 window.onload = main;

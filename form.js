@@ -68,18 +68,17 @@ function surpriseMe() {
 
 }
 
-function removeRow(container, id) {
+function removeRow(el, container) {
   const parent = container.querySelector('#form');
-  const row = parent.querySelector(`#row${id}`);
-  if (row && parent.childElementCount > 1) {
-    parent.removeChild(row);
+  if (el && parent.childElementCount > 1) {
+    parent.removeChild(el);
   }
   if (parent.childElementCount === 1) {
     parent.querySelector('.minusButton').setAttribute('disabled', 'true');
   }
 }
 
-function addRow(container, siblingId) {
+function addRow(el, container) {
   const parent = container.querySelector('#form');
   const id = parent.childElementCount + 1;
 
@@ -110,27 +109,20 @@ function addRow(container, siblingId) {
   if (parent.childElementCount === 0) {
     minus.setAttribute('disabled', 'true');
   }
-  minus.onclick = () => { removeRow(container, id); }
+  minus.onclick = () => { removeRow(rowDiv, container); }
   rowDiv.appendChild(minus);
 
   const plus = document.createElement('button');
   plus.innerHTML = '+';
-  plus.onclick = () => { addRow(container, id); };
+  plus.onclick = (e) => { addRow(rowDiv, container); };
   rowDiv.appendChild(plus);
 
-  if (!siblingId) {
-    parent.appendChild(rowDiv);
-    return;
-  }
-
-  const sibling = parent.querySelector(`#row${siblingId}`);
-  if (sibling && sibling.nextSibling) {
-    parent.insertBefore(rowDiv, sibling.nextSibling);
+  if (el && el.nextSibling) {
+    parent.insertBefore(rowDiv, el.nextSibling);
     return;
   }
 
   parent.appendChild(rowDiv);
-
 }
 
 function download(content, fileName, contentType) {
@@ -182,7 +174,7 @@ function addDrink() {
     const row = formRows[i];
     row.parentElement.removeChild(row);
   }
-  addRow(newDrinkContainer);
+  addRow(null, newDrinkContainer);
 
   buttonContainer.insertAdjacentElement('beforebegin', newDrinkContainer);
   
