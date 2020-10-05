@@ -2,6 +2,26 @@ body {
   background: #eee;
 }
 
+#sharedControls {
+  margin-bottom: 15px;
+}
+
+button.info {
+  width: 105px;
+}
+
+button.info.drinkQuantity {
+  font-size: 24px;
+  width: 38px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  margin-bottom: 40px;
+}
+
 div.drink {
   background: white;
   display: flex;
@@ -17,12 +37,6 @@ div.drink {
 
 .formrow > * {
   margin-right: 5px;
-}
-
-.container {
-  display: flex;
-  flex-direction: row;
-  overflow-x: auto;
 }
 
 .drinkcontainer {
@@ -50,15 +64,6 @@ div.drink {
 
 input.amount {
   width: 4em;
-}
-
-button.info {
-  width: 105px;
-}
-
-button.info.drinkQuantity {
-  font-size: 24px;
-  width: 38px;
 }
 
 #random {
